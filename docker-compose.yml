@@ -20,13 +20,13 @@ services:
       - db_data:/app/db
     restart: unless-stopped
 
-  deploy_webhook:
-    build:
-      context: ./deploy_webhook
+  #deploy_webhook:
+  #  build:
+  #    context: ./deploy_webhook
 
-    volumes:
-      - .:/repo
-    restart: unless-stopped
+  #  volumes:
+  #    - .:/repo
+  #  restart: unless-stopped
   
 volumes:
   db_data:
