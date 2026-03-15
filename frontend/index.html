@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tommy @ elvebu</title>
+</head>
+<body>
+  <h1>Tommy @ elvebu</h1>
+  <p>If you see this, nginx + Cloudflare Tunnel + Docker are working.</p>
+
+  <button id="ping">Ping API</button>
+  <pre id="result"></pre>
+
+  <script>
+    document.getElementById('ping').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/hello');
+        const data = await res.json();
+        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        document.getElementById('result').textContent = 'Error: ' + e;
+      }
+    });
+  </script>
+</body>
+</html>
