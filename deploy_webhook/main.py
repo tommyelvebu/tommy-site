@@ -26,6 +26,7 @@ def run_deploy():
     logger.info("Starting deployment...")
     try:
         subprocess.run(["git", "pull"], cwd=REPO_PATH, check=True)
+        subprocess.run(["chown", "-R", "1000:1000", REPO_PATH], check=True)
         subprocess.run(
             ["docker", "compose", "up", "-d", "--build", "--no-deps", "nginx", "backend"],
             cwd=REPO_PATH,
