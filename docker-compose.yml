@@ -1,33 +1,35 @@
-version: "3.9"
-
 services:
   nginx:
     build:
       context: ./nginx
     ports:
-    - "80:80" # cloudflared will reach this
-    depends_on: 
-    - backend
+      - "80:80"
+    depends_on:
+      - backend
     volumes:
-    - ./frontend:/usr/share/nginx/html:ro
+      - ./frontend:/usr/share/nginx/html:ro
     restart: unless-stopped
-  
+
   backend:
     build:
       context: ./backend
     volumes:
-      - ./backend/app
+      - ./backend/app:/app/app
       - db_data:/app/db
     restart: unless-stopped
 
-  #deploy_webhook:
-  #  build:
-  #    context: ./deploy_webhook
+  deploy_webhook:
+    build:
+      context: ./deploy_webhook
+    ports:
+      - "9000:9000"
+    volumes:
+      - /home/pi/tommy-site:/repo
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+      - COMPOSE_PROJECT_NAME=tommy-site
+    restart: unless-stopped
 
-  #  volumes:
-  #    - .:/repo
-  #  restart: unless-stopped
-  
 volumes:
   db_data:
-
