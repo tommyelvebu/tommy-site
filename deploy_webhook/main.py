@@ -27,7 +27,7 @@ def run_deploy():
     try:
         subprocess.run(["git", "pull"], cwd=REPO_PATH, check=True)
         subprocess.run(
-            ["docker", "compose", "up", "-d", "--build"],
+            ["docker", "compose", "up", "-d", "--build", "--no-deps", "nginx", "backend"],
             cwd=REPO_PATH,
             check=True,
         )
