@@ -2,27 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tommy @ elvebu</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
 </head>
 <body>
-  <h1>Tommy @ elvebu</h1>
-  <p>If you see this, nginx + Cloudflare Tunnel + Docker are working. Maybe even github webhook?
-    Das ist Große gut 
-  </p>
-  <p>
-    if you see this it is very cool 
-    super duper cool
-  </p>
-  <p>
-    yesyes
-  </p>
-  <p>
-    no no 
-  </p>
 
-  <button id="ping">Ping API</button>
-  <pre id="result"></pre>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Tommy @ elvebu</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </nav>
 
+  <div class="container" style="padding-top: 70px;">
+    <div class="jumbotron">
+      <h1>Tommy @ elvebu</h1>
+      <p>If you see this, nginx + Cloudflare Tunnel + Docker are working. Maybe even github webhook? Das ist Große gut</p>
+      <p>super duper cool — yesyes</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">API Test</h3>
+          </div>
+          <div class="panel-body">
+            <p>Click the button to ping the backend API.</p>
+            <button id="ping" class="btn btn-primary">Ping API</button>
+            <pre id="result" style="margin-top: 15px;"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Stack</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <li>Nginx reverse proxy</li>
+              <li>Cloudflare Tunnel</li>
+              <li>Docker Compose</li>
+              <li>GitHub webhook deploy</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/bootstrap.min.js"></script>
   <script>
     document.getElementById('ping').addEventListener('click', async () => {
       try {
