@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Tommy Elvebu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <nav id="navbar" class="navbar navbar-default navbar-fixed-top"></nav>
+  <script src="/js/components.js"></script>
+
+  <div class="container content-container">
+    <div class="page-header">
+      <h1>Projects</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">K-Means vs Hierarchical Clustering</h3>
+          </div>
+          <div class="panel-body">
+            <p>Exploratory analysis comparing K-means and hierarchical clustering on the Wine dataset.
+              Highlights trade-offs between speed, initialization sensitivity, and determinism.</p>
+            <a href="https://github.com/tommyelvebu/kmeans-vs-hierarchical-clustering" class="btn btn-default" target="_blank">GitHub</a>
+            <a class="btn btn-primary" onclick="openViewer('kmeans')">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">User Call Behaviour Analysis</h3>
+          </div>
+          <div class="panel-body">
+            <p>Analysis of ~25,000 phone calls to classify unlabeled contacts and identify suspicious
+              calling patterns using Random Forest and K-Means clustering.</p>
+            <a href="https://github.com/tommyelvebu/User_Call_Behaviour" class="btn btn-default" target="_blank">GitHub</a>
+            <a class="btn btn-primary" onclick="openViewer('ucb')">View Project</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="viewer-overlay" onclick="closeViewer()"></div>
+  <div id="viewer" style="display:none;">
+    <div id="viewer-sidebar"></div>
+    <iframe id="viewer-frame"></iframe>
+  </div>
+  <button id="viewer-close" style="display:none;" onclick="closeViewer()">X</button>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/js/bootstrap.min.js"></script>
+  <script>
+    var projects = {
+      kmeans: {
+        title: "K-Means vs Hierarchical",
+        notebooks: [
+          { label: "Analysis", src: "/projects/kmeans-vs-hierarchical/notebook.html" }
+        ]
+      },
+      ucb: {
+        title: "User Call Behaviour",
+        notebooks: [
+          { label: "1. Data Cleaning", src: "/projects/user-call-behaviour/01_data_cleaning.html" },
+          { label: "2. Data Exploration", src: "/projects/user-call-behaviour/02_data_exploration.html" },
+          { label: "3. Feature Engineering", src: "/projects/user-call-behaviour/03_feature_engineering.html" },
+          { label: "4. Supervised Learning", src: "/projects/user-call-behaviour/04_supervised_learning.html" },
+          { label: "5. Clustering", src: "/projects/user-call-behaviour/05_clustering.html" },
+          { label: "6. Business Insights", src: "/projects/user-call-behaviour/06_business_insights.html" }
+        ]
+      }
+    };
+
+    function openViewer(projectKey) {
+      var project = projects[projectKey];
+      var sidebar = document.getElementById("viewer-sidebar");
+      var html = '<div class="sidebar-title">' + project.title + '</div>';
+      project.notebooks.forEach(function (nb, i) {
+        html += '<a onclick="loadNotebook(\'' + nb.src + '\', this)" ' +
+                (i === 0 ? 'class="active"' : '') + '>' + nb.label + '</a>';
+      });
+      sidebar.innerHTML = html;
+
+      document.getElementById("viewer-frame").src = project.notebooks[0].src;
+      document.getElementById("viewer-overlay").style.display = "block";
+      document.getElementById("viewer").style.display = "flex";
+      document.getElementById("viewer-close").style.display = "block";
+    }
+
+    function loadNotebook(src, el) {
+      document.getElementById("viewer-frame").src = src;
+      var links = document.getElementById("viewer-sidebar").getElementsByTagName("a");
+      for (var i = 0; i < links.length; i++) links[i].className = "";
+      el.className = "active";
+    }
+
+    function closeViewer() {
+      document.getElementById("viewer-overlay").style.display = "none";
+      document.getElementById("viewer").style.display = "none";
+      document.getElementById("viewer-close").style.display = "none";
+      document.getElementById("viewer-frame").src = "";
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeViewer();
+    });
+  </script>
+</body>
+</html>

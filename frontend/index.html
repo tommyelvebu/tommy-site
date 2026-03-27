@@ -3,76 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tommy @ elvebu</title>
-  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="/">Tommy @ elvebu</a>
-      </div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-    </div>
-  </nav>
+  <nav id="navbar" class="navbar navbar-default navbar-fixed-top"></nav>
+  <script src="/js/components.js"></script>
 
-  <div class="container" style="padding-top: 70px;">
+  <div class="container content-container">
     <div class="jumbotron">
-      <h1>Tommy @ elvebu</h1>
-      <p>If you see this, nginx + Cloudflare Tunnel + Docker are working. Maybe even github webhook? Das ist Große gut</p>
-      <p>super duper cool — yesyes</p>
+      <img src="/img/lofoten_monk.jpeg" alt="Big BOSS in Lofoten" class="hero-image">
+      <h1>Hello.</h1>
+      <br>
+      <p>I study data science and work with software development at Intility.
+        I created this website to motivate myself to create projects without depending on AI tools
+        and to have a place where I can post whatever I want.
+      </p>
+      <br>
+      <p>I enjoy machine learning, data analytics and I am eager to become better at DevOps.</p>
+      <br>
+      <p>This website is self-hosted on a Raspberry Pi running Nginx and Docker. </p>
     </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">API Test</h3>
-          </div>
-          <div class="panel-body">
-            <p>Click the button to ping the backend API.</p>
-            <button id="ping" class="btn btn-primary">Ping API</button>
-            <pre id="result" style="margin-top: 15px;"></pre>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title">Stack</h3>
-          </div>
-          <div class="panel-body">
-            <ul>
-              <li>Nginx reverse proxy</li>
-              <li>Cloudflare Tunnel</li>
-              <li>Docker Compose</li>
-              <li>GitHub webhook deploy</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/js/bootstrap.min.js"></script>
-  <script>
-    document.getElementById('ping').addEventListener('click', async () => {
-      try {
-        const res = await fetch('/api/hello');
-        const data = await res.json();
-        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-      } catch (e) {
-        document.getElementById('result').textContent = 'Error: ' + e;
-      }
-    });
-  </script>
 </body>
 </html>
