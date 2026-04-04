@@ -17,8 +17,8 @@ function loadNavbar() {
   var path = window.location.pathname;
   var links = [
     { href: "/", label: "Home" },
-    { href: "/projects.html", label: "Projects" },
-    { href: "/gym.html", label: "Gym" },
+    { href: "/projects", label: "Projects" },
+    { href: "/gym", label: "Gym" },
   ];
 
   var items = links.map(function (link) {
