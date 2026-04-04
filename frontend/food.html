@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food - Tommy Elvebu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap-theme.min.css">
+  <style>
+    .content-container { padding-top: 70px; }
+
+    /* Barchart styles */
+    .dinner-row { margin-bottom: 4px; }
+    .dinner-row .dish-name {
+      display: inline-block;
+      width: 200px;
+      text-align: right;
+      padding-right: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    .dinner-row .bar-wrapper {
+      display: inline-block;
+      width: calc(100% - 260px);
+      vertical-align: middle;
+    }
+    .dinner-row .dish-count {
+      display: inline-block;
+      width: 40px;
+      text-align: left;
+      padding-left: 8px;
+      vertical-align: middle;
+    }
+    .progress { margin-bottom: 0; height: 22px; }
+
+    /* Recipe accordion */
+    .recipe-panel .list-group-item { padding: 6px 15px; }
+    .recipe-panel .panel-body ol { padding-left: 20px; }
+    .recipe-panel .panel-body ol li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar navbar-default navbar-fixed-top"></nav>
+  <script src="/js/components.js"></script>
+
+  <div class="container content-container">
+    <div class="page-header">
+      <h1>Food <small>Dinner Tracker & Recipes</small></h1>
+    </div>
+
+    <!-- Dinner Tracker -->
+    <h2><span class="glyphicon glyphicon-stats"></span> Dinner Tracker 2026</h2>
+    <p>How many times I've made each dinner this year. Live data from Google Sheets.</p>
+
+    <div class="well" id="dinner-chart">
+      <p><span class="glyphicon glyphicon-refresh"></span> Loading dinner data...</p>
+    </div>
+
+    <hr>
+
+    <!-- Recipes -->
+    <h2><span class="glyphicon glyphicon-cutlery"></span> Recipes</h2>
+    <p>Click a recipe to expand it.</p>
+
+    <div class="panel-group" id="recipe-accordion">
+
+      <div class="panel panel-default recipe-panel">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#recipe-accordion" href="#recipe-1" style="cursor:pointer;">
+          <h4 class="panel-title">
+            <span class="glyphicon glyphicon-menu-right"></span> Placeholder Recipe 1
+          </h4>
+        </div>
+        <div id="recipe-1" class="panel-collapse collapse">
+          <div class="panel-heading"><strong>Ingredients</strong></div>
+          <ul class="list-group">
+            <li class="list-group-item">400g ingredient one</li>
+            <li class="list-group-item">2 tbsp ingredient two</li>
+            <li class="list-group-item">1 tsp ingredient three</li>
+            <li class="list-group-item">200ml ingredient four</li>
+          </ul>
+          <div class="panel-body">
+            <strong>Instructions</strong>
+            <ol>
+              <li>Step one of the recipe.</li>
+              <li>Step two of the recipe.</li>
+              <li>Step three of the recipe.</li>
+              <li>Step four of the recipe.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default recipe-panel">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#recipe-accordion" href="#recipe-2" style="cursor:pointer;">
+          <h4 class="panel-title">
+            <span class="glyphicon glyphicon-menu-right"></span> Placeholder Recipe 2
+          </h4>
+        </div>
+        <div id="recipe-2" class="panel-collapse collapse">
+          <div class="panel-heading"><strong>Ingredients</strong></div>
+          <ul class="list-group">
+            <li class="list-group-item">500g ingredient one</li>
+            <li class="list-group-item">1 ingredient two</li>
+            <li class="list-group-item">3 ingredient three</li>
+          </ul>
+          <div class="panel-body">
+            <strong>Instructions</strong>
+            <ol>
+              <li>Step one of the recipe.</li>
+              <li>Step two of the recipe.</li>
+              <li>Step three of the recipe.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default recipe-panel">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#recipe-accordion" href="#recipe-3" style="cursor:pointer;">
+          <h4 class="panel-title">
+            <span class="glyphicon glyphicon-menu-right"></span> Placeholder Recipe 3
+          </h4>
+        </div>
+        <div id="recipe-3" class="panel-collapse collapse">
+          <div class="panel-heading"><strong>Ingredients</strong></div>
+          <ul class="list-group">
+            <li class="list-group-item">300g ingredient one</li>
+            <li class="list-group-item">2 ingredient two</li>
+            <li class="list-group-item">1 can ingredient three</li>
+            <li class="list-group-item">Salt and pepper to taste</li>
+          </ul>
+          <div class="panel-body">
+            <strong>Instructions</strong>
+            <ol>
+              <li>Step one of the recipe.</li>
+              <li>Step two of the recipe.</li>
+              <li>Step three of the recipe.</li>
+              <li>Step four of the recipe.</li>
+              <li>Step five of the recipe.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/js/bootstrap.min.js"></script>
+  <script>
+    // Color thresholds for bar chart
+    function barColor(count, max) {
+      var ratio = count / max;
+      if (ratio > 0.7) return "progress-bar-danger";
+      if (ratio > 0.4) return "progress-bar-warning";
+      if (ratio > 0.2) return "progress-bar-info";
+      return "progress-bar-success";
+    }
+
+    function renderChart(data) {
+      var container = document.getElementById("dinner-chart");
+
+      if (!data || data.length === 0) {
+        container.innerHTML = '<p>No dinner data available.</p>';
+        return;
+      }
+
+      // Sort by count descending
+      data.sort(function (a, b) { return b.count - a.count; });
+      var max = data[0].count;
+
+      var html = '';
+      data.forEach(function (item) {
+        var pct = Math.max((item.count / max) * 100, 2);
+        var color = barColor(item.count, max);
+        html += '<div class="dinner-row">' +
+                  '<span class="dish-name">' + item.dish + '</span>' +
+                  '<span class="bar-wrapper">' +
+                    '<div class="progress">' +
+                      '<div class="progress-bar ' + color + '" style="width:' + pct + '%"></div>' +
+                    '</div>' +
+                  '</span>' +
+                  '<span class="dish-count">' + item.count + '</span>' +
+                '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Fetch dinner data from backend
+    fetch("/api/dinners")
+      .then(function (res) { return res.json(); })
+      .then(function (data) { renderChart(data); })
+      .catch(function () {
+        document.getElementById("dinner-chart").innerHTML =
+          '<p class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Failed to load dinner data.</p>';
+      });
+  </script>
+</body>
+</html>

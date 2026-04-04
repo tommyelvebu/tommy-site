@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gym - Tommy Elvebu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap-theme.min.css">
+  <style>
+    .content-container { padding-top: 70px; }
+    .pr-grid .thumbnail { cursor: pointer; }
+    .pr-grid .thumbnail:hover { border-color: #0aa; }
+    .pr-grid .thumbnail video { width: 100%; height: 200px; object-fit: cover; background: #000; }
+    .pr-grid .thumbnail .caption h4 { margin-top: 5px; }
+    .program-card { margin-bottom: 20px; }
+    .program-card .btn { margin-top: 10px; }
+
+    /* Video viewer overlay - same pattern as projects */
+    #viewer-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10000; background: rgba(0,0,0,0.5); }
+    #viewer { position: fixed; top: 40px; bottom: 40px; left: 10%; right: 10%; z-index: 10001; display: flex; border: 2px solid #bbb; }
+    #viewer-sidebar { width: 220px; min-width: 220px; background: #000084; color: #bbb; overflow-y: auto; padding: 10px 0; border-right: 2px solid #bbb; }
+    #viewer-sidebar .sidebar-title { padding: 8px 12px; font-weight: bold; color: #fff; border-bottom: 1px solid #555; margin-bottom: 5px; }
+    #viewer-sidebar a { display: block; padding: 6px 12px; color: #bbb; text-decoration: none; cursor: pointer; }
+    #viewer-sidebar a:hover, #viewer-sidebar a.active { background: #0aa; color: #000; }
+    #viewer-close { position: fixed; top: 10px; right: 10px; z-index: 10002; background: #a00; color: #fff; border: 2px solid #bbb; padding: 2px 10px; font-size: 18px; cursor: pointer; }
+    #viewer-main { flex: 1; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    #viewer-main video { width: 100%; height: 100%; object-fit: contain; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar navbar-default navbar-fixed-top"></nav>
+  <script src="/js/components.js"></script>
+
+  <div class="container content-container">
+    <div class="page-header">
+      <h1>Gym PRs & Programs</h1>
+    </div>
+
+    <!-- Personal Records -->
+    <h2> Personal Records</h2>
+    <p>Click a video to watch.</p>
+
+    <div class="row pr-grid" id="pr-grid">
+      <!-- Placeholder PR cards - replace with your actual videos -->
+      <div class="col-md-4 col-sm-6">
+        <div class="thumbnail" onclick="openViewer(0)">
+          <video muted preload="metadata">
+            <source src="/videos/benchpress.mp4" type="video/mp4">
+          </video>
+          <div class="caption">
+            <h4>Bench Press</h4>
+            <p>180 kg <span class="label label-danger">PR</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="thumbnail" onclick="openViewer(1)">
+          <video muted preload="metadata">
+            <source src="/videos/squat.mp4" type="video/mp4">
+          </video>
+          <div class="caption">
+            <h4>Squat</h4>
+            <p>242.5 kg <span class="label label-danger">PR</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="thumbnail" onclick="openViewer(2)">
+          <video muted preload="metadata">
+            <source src="/videos/deadlift.mp4" type="video/mp4">
+          </video>
+          <div class="caption">
+            <h4>Deadlift</h4>
+            <p>280.5 kg <span class="label label-danger">PR</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Workout Programs -->
+    <h2>Workout Programs</h2>
+    <p>Click a program to view the full spreadsheet.</p>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default program-card">
+          <div class="panel-heading">
+            <h3 class="panel-title">Powerlifting Program</h3>
+          </div>
+          <div class="panel-body">
+            <p>Min/max powerlifting program which minimizes the time spent in the gym, while still maximizing gains in the squat,
+              bench and deadlift.
+            </p>
+          </div>
+          <div class="panel-footer">
+            <a href="https://docs.google.com/spreadsheets/d/1RXE0pnWxlzlGjYtmGQXvxhqbX_OeDYY3F7yqJuCosH8/edit?gid=1754260834#gid=1754260834" class="btn btn-default btn-block" target="_blank">
+              <span class="glyphicon glyphicon-new-window"></span> Open in Google Sheets
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default program-card">
+          <div class="panel-heading">
+            <h3 class="panel-title">General Program</h3>
+          </div>
+          <div class="panel-body">
+            <p>My current program with focus on getting stronger at weighted dips and pullups, with good quality exercises for the
+              entire body. Also cardio :)
+            </p>
+          </div>
+          <div class="panel-footer">
+            <a href="https://docs.google.com/spreadsheets/d/15z9gwXGdQPUtLY-UPJNIvnpA3wXnCmj_9bpGn4yEfsg/edit?gid=2024993867#gid=2024993867" class="btn btn-default btn-block" target="_blank">
+              <span class="glyphicon glyphicon-new-window"></span> Open in Google Sheets
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Viewer Overlay -->
+  <div id="viewer-overlay" onclick="closeViewer()"></div>
+  <div id="viewer" style="display:none;">
+    <div id="viewer-sidebar"></div>
+    <div id="viewer-main"></div>
+  </div>
+  <button id="viewer-close" style="display:none;" onclick="closeViewer()">X</button>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/js/bootstrap.min.js"></script>
+  <script>
+    // PR video data - update these with your actual videos and lifts
+    var prs = [
+      { label: "Bench Press — 180 kg", src: "/videos/benchpress.mp4" },
+      { label: "Squat — 242.5 kg", src: "/videos/squat.mp4" },
+      { label: "Deadlift — 280.5 kg", src: "/videos/deadlift.mp4" }
+    ];
+
+    function openViewer(index) {
+      var sidebar = document.getElementById("viewer-sidebar");
+      var html = '<div class="sidebar-title">Personal Records</div>';
+      prs.forEach(function (pr, i) {
+        html += '<a onclick="loadVideo(' + i + ', this)" ' +
+                (i === index ? 'class="active"' : '') + '>' + pr.label + '</a>';
+      });
+      sidebar.innerHTML = html;
+
+      loadVideoContent(index);
+      document.getElementById("viewer-overlay").style.display = "block";
+      document.getElementById("viewer").style.display = "flex";
+      document.getElementById("viewer-close").style.display = "block";
+    }
+
+    function loadVideo(index, el) {
+      var links = document.getElementById("viewer-sidebar").getElementsByTagName("a");
+      for (var i = 0; i < links.length; i++) links[i].className = "";
+      el.className = "active";
+      loadVideoContent(index);
+    }
+
+    function loadVideoContent(index) {
+      var main = document.getElementById("viewer-main");
+      main.innerHTML = '<video controls autoplay style="max-width:100%;max-height:100%;">' +
+                        '<source src="' + prs[index].src + '" type="video/mp4">' +
+                        'Your browser does not support video.' +
+                        '</video>';
+    }
+
+    function closeViewer() {
+      document.getElementById("viewer-overlay").style.display = "none";
+      document.getElementById("viewer").style.display = "none";
+      document.getElementById("viewer-close").style.display = "none";
+      document.getElementById("viewer-main").innerHTML = "";
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeViewer();
+    });
+  </script>
+</body>
+</html>
