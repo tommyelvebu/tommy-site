@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-html:
+    name: Validate HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install html5validator
+        run: pip install html5validator
+      - name: Validate HTML files
+        run: html5validator --root frontend/ --match "*.html" --ignore-re "Element .* not allowed" "Attribute .* not allowed"
+
+  lint-python:
+    name: Lint Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ruff
+        run: pip install ruff
+      - name: Check backend
+        run: ruff check backend/
+      - name: Check deploy webhook
+        run: ruff check deploy_webhook/
+
+  build-images:
+    name: Build Docker images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build nginx
+        run: docker build -t tommy-site-nginx ./nginx
+      - name: Build backend
+        run: docker build -t tommy-site-backend ./backend
+      - name: Build deploy webhook
+        run: docker build -t tommy-site-webhook ./deploy_webhook
+
+  test-backend:
+    name: Test backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt httpx
+      - name: Test health endpoint
+        run: |
+          python -c "
+          from fastapi.testclient import TestClient
+          from backend.app.main import app
+          client = TestClient(app)
+          r = client.get('/api/health')
+          assert r.status_code == 200
+          assert r.json() == {'status': 'ok'}
+          print('Health check passed')
+          "

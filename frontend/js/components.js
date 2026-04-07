@@ -3,6 +3,12 @@ style.textContent =
   '.navbar-brand:hover::first-letter { color: #000 !important; }' +
   '.hero-image { width: 100%; height: 500px; object-fit: cover; object-position: center 65%; margin-bottom: 20px; }' +
   '.content-container { padding-top: 70px; }' +
+  'html { height: 100%; }' +
+  'body { min-height: 100%; display: flex; flex-direction: column; }' +
+  '.content-container { flex: 1; }' +
+  '.site-footer { background: #000084; color: #bbb; padding: 20px 0; border-top: 2px solid #bbb; }' +
+  '.site-footer a { color: #0aa; margin: 0 10px; text-decoration: none; }' +
+  '.site-footer a:hover { color: #fff; }' +
   '#viewer-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10000; background: rgba(0,0,0,0.5); }' +
   '#viewer { position: fixed; top: 40px; bottom: 40px; left: 10%; right: 10%; z-index: 10001; display: flex; border: 2px solid #bbb; }' +
   '#viewer-sidebar { width: 220px; min-width: 220px; background: #000084; color: #bbb; overflow-y: auto; padding: 10px 0; border-right: 2px solid #bbb; }' +
@@ -37,4 +43,19 @@ function loadNavbar() {
     '</div>';
 }
 
-document.addEventListener("DOMContentLoaded", loadNavbar);
+function loadFooter() {
+  var footer = document.createElement('footer');
+  footer.className = 'site-footer';
+  footer.innerHTML =
+    '<div class="container text-center">' +
+      '<a href="https://github.com/tommyelvebu" target="_blank">GitHub</a>' +
+      '<a href="https://www.linkedin.com/in/tommy-elvebu-a43108254/" target="_blank">LinkedIn</a>' +
+      '<a href="mailto:tommy.elvebu@pm.me">Email</a>' +
+    '</div>';
+  document.body.appendChild(footer);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  loadNavbar();
+  loadFooter();
+});
