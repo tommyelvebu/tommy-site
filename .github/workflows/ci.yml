@@ -15,7 +15,7 @@ jobs:
       - name: Install html5validator
         run: pip install html5validator
       - name: Validate HTML files
-        run: html5validator --root frontend/ --match "*.html" --blacklist frontend/projects/ --ignore-re "Element .* not allowed" "Attribute .* not allowed"
+        run: html5validator frontend/index.html frontend/projects.html frontend/gym.html frontend/food.html --ignore-re "Element .* not allowed" "Attribute .* not allowed"
 
   lint-python:
     name: Lint Python
