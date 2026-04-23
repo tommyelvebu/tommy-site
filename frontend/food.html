@@ -52,7 +52,7 @@
     </div>
 
     <!-- Dinner Tracker -->
-    <h2><span class="glyphicon glyphicon-stats"></span> Dinner Tracker 2026</h2>
+    <h2><span class="glyphicon glyphicon-stats"></span> Top 10 Dinners 2026</h2>
     <p>How many times I've made each dinner this year. Live data from Google Sheets.</p>
 
     <div class="well" id="dinner-chart">
@@ -70,76 +70,12 @@
       <div class="panel panel-default recipe-panel">
         <div class="panel-heading" data-toggle="collapse" data-parent="#recipe-accordion" href="#recipe-1" style="cursor:pointer;">
           <h4 class="panel-title">
-            <span class="glyphicon glyphicon-menu-right"></span> Placeholder Recipe 1
+            <span class="glyphicon glyphicon-menu-right"></span> Recipe coming soon
           </h4>
         </div>
         <div id="recipe-1" class="panel-collapse collapse">
-          <div class="panel-heading"><strong>Ingredients</strong></div>
-          <ul class="list-group">
-            <li class="list-group-item">400g ingredient one</li>
-            <li class="list-group-item">2 tbsp ingredient two</li>
-            <li class="list-group-item">1 tsp ingredient three</li>
-            <li class="list-group-item">200ml ingredient four</li>
-          </ul>
           <div class="panel-body">
-            <strong>Instructions</strong>
-            <ol>
-              <li>Step one of the recipe.</li>
-              <li>Step two of the recipe.</li>
-              <li>Step three of the recipe.</li>
-              <li>Step four of the recipe.</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-default recipe-panel">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#recipe-accordion" href="#recipe-2" style="cursor:pointer;">
-          <h4 class="panel-title">
-            <span class="glyphicon glyphicon-menu-right"></span> Placeholder Recipe 2
-          </h4>
-        </div>
-        <div id="recipe-2" class="panel-collapse collapse">
-          <div class="panel-heading"><strong>Ingredients</strong></div>
-          <ul class="list-group">
-            <li class="list-group-item">500g ingredient one</li>
-            <li class="list-group-item">1 ingredient two</li>
-            <li class="list-group-item">3 ingredient three</li>
-          </ul>
-          <div class="panel-body">
-            <strong>Instructions</strong>
-            <ol>
-              <li>Step one of the recipe.</li>
-              <li>Step two of the recipe.</li>
-              <li>Step three of the recipe.</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-default recipe-panel">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#recipe-accordion" href="#recipe-3" style="cursor:pointer;">
-          <h4 class="panel-title">
-            <span class="glyphicon glyphicon-menu-right"></span> Placeholder Recipe 3
-          </h4>
-        </div>
-        <div id="recipe-3" class="panel-collapse collapse">
-          <div class="panel-heading"><strong>Ingredients</strong></div>
-          <ul class="list-group">
-            <li class="list-group-item">300g ingredient one</li>
-            <li class="list-group-item">2 ingredient two</li>
-            <li class="list-group-item">1 can ingredient three</li>
-            <li class="list-group-item">Salt and pepper to taste</li>
-          </ul>
-          <div class="panel-body">
-            <strong>Instructions</strong>
-            <ol>
-              <li>Step one of the recipe.</li>
-              <li>Step two of the recipe.</li>
-              <li>Step three of the recipe.</li>
-              <li>Step four of the recipe.</li>
-              <li>Step five of the recipe.</li>
-            </ol>
+            <p>No recipes added yet.</p>
           </div>
         </div>
       </div>
@@ -150,7 +86,6 @@
   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/js/bootstrap.min.js"></script>
   <script>
-    // Color thresholds for bar chart
     function barColor(count, max) {
       var ratio = count / max;
       if (ratio > 0.7) return "progress-bar-danger";
@@ -167,8 +102,8 @@
         return;
       }
 
-      // Sort by count descending
       data.sort(function (a, b) { return b.count - a.count; });
+      data = data.slice(0, 10);
       var max = data[0].count;
 
       var html = '';
@@ -189,7 +124,6 @@
       container.innerHTML = html;
     }
 
-    // Fetch dinner data from backend
     fetch("/api/dinners")
       .then(function (res) { return res.json(); })
       .then(function (data) { renderChart(data); })
