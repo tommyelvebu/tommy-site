@@ -2,15 +2,14 @@ import os
 import json
 import sqlite3
 import re
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-app = FastAPI()
-
-DB_PATH = "/app/db/guestbook.db"
+DB_PATH = os.environ.get("GUESTBOOK_DB_PATH", "/app/db/guestbook.db")
 
 
 def get_db():
@@ -35,7 +34,13 @@ def init_db():
     conn.close()
 
 
-init_db()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 class GuestbookEntry(BaseModel):

@@ -55,6 +55,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r backend/requirements.txt httpx
       - name: Test health endpoint
+        env:
+          GUESTBOOK_DB_PATH: /tmp/guestbook.db
         run: |
           python -c "
           from fastapi.testclient import TestClient
