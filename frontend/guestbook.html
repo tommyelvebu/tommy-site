@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest Book - Tommy Elvebu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/css/bootstrap-theme.min.css">
+  <style>
+    .content-container { padding-top: 70px; }
+    .entry-panel { background-color: #000084; border-color: #7b2fbe; margin-bottom: 12px; }
+    .entry-panel .panel-heading { background-color: #7b2fbe; border-color: #7b2fbe; color: #000; }
+    .entry-panel .panel-body { color: #bbb; }
+    .entry-date { color: #888; font-size: 12px; }
+    #word-count { color: #bbb; font-size: 12px; }
+    #word-count.over-limit { color: #f00; }
+    #submit-result { margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar navbar-default navbar-fixed-top"></nav>
+  <script src="/js/components.js"></script>
+
+  <div class="container content-container">
+    <div class="page-header">
+      <h1>Guest Book</h1>
+    </div>
+    <p>Leave your name and a message which will live on forever on this website.</p>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title">Sign the guest book</h3></div>
+      <div class="panel-body">
+        <form id="guestbook-form">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="gb-name">Name</label>
+                <input type="text" class="form-control" id="gb-name" placeholder="Your name" maxlength="100" required>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="gb-email">Email</label>
+                <input type="email" class="form-control" id="gb-email" placeholder="your@email.com" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="gb-message">Message <span id="word-count">(0 / 100 words)</span></label>
+            <textarea class="form-control" id="gb-message" rows="4" placeholder="What's on your mind?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <div id="submit-result"></div>
+        </form>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>Entries</h2>
+    <div id="entries-list">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/kristopolous/BOOTSTRA.386@master/v3.3.2/dist/js/bootstrap.min.js"></script>
+  <script>
+    function wordCount(text) {
+      return text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+    }
+
+    document.getElementById("gb-message").addEventListener("input", function() {
+      var count = wordCount(this.value);
+      var el = document.getElementById("word-count");
+      el.textContent = "(" + count + " / 100 words)";
+      el.className = count > 100 ? "over-limit" : "";
+    });
+
+    function loadEntries() {
+      fetch("/api/guestbook")
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          var container = document.getElementById("entries-list");
+          if (!data.length) {
+            container.innerHTML = "<p>No entries yet. Be the first!</p>";
+            return;
+          }
+          var html = "";
+          data.forEach(function(entry) {
+            html +=
+              '<div class="panel entry-panel">' +
+                '<div class="panel-heading">' +
+                  '<strong>' + escapeHtml(entry.name) + '</strong>' +
+                  '<span class="entry-date pull-right">' + entry.created_at + '</span>' +
+                '</div>' +
+                '<div class="panel-body">' + escapeHtml(entry.message) + '</div>' +
+              '</div>';
+          });
+          container.innerHTML = html;
+        })
+        .catch(function() {
+          document.getElementById("entries-list").innerHTML =
+            '<p class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Failed to load entries.</p>';
+        });
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    document.getElementById("guestbook-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      var name = document.getElementById("gb-name").value;
+      var email = document.getElementById("gb-email").value;
+      var message = document.getElementById("gb-message").value;
+      var resultEl = document.getElementById("submit-result");
+
+      if (wordCount(message) > 100) {
+        resultEl.innerHTML = '<p class="text-danger">Message exceeds 100 words.</p>';
+        return;
+      }
+
+      resultEl.innerHTML = '<p>Submitting...</p>';
+
+      fetch("/api/guestbook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, email: email, message: message })
+      })
+        .then(function(res) {
+          if (!res.ok) return res.json().then(function(d) { throw new Error(d.detail || "Error"); });
+          return res.json();
+        })
+        .then(function() {
+          resultEl.innerHTML = '<p class="text-success">Entry added! Thanks :)</p>';
+          document.getElementById("guestbook-form").reset();
+          document.getElementById("word-count").textContent = "(0 / 100 words)";
+          loadEntries();
+        })
+        .catch(function(err) {
+          resultEl.innerHTML = '<p class="text-danger">' + escapeHtml(err.message) + '</p>';
+        });
+    });
+
+    loadEntries();
+  </script>
+</body>
+</html>

@@ -29,6 +29,7 @@ function loadNavbar() {
     { href: "/projects.html", label: "Projects" },
     { href: "/gym.html", label: "Gym" },
     { href: "/food.html", label: "Food" },
+    { href: "/guestbook.html", label: "Guest Book" },
   ];
 
   var items = links.map(function (link) {
