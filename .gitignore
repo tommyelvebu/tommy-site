@@ -5,4 +5,3 @@ __pycache__/
 .DS_Store
 credentials/*.json
 PI_SETUP.md
-dev_server.py
