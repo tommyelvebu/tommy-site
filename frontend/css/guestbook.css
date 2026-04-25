@@ -49,6 +49,10 @@
 .entry-card-date { color: #555; font-size: 12px; }
 .entry-card-body { padding: 10px 12px; color: #bbb; }
 
+.field-error { display: none; color: #f00; font-size: 12px; margin-top: 4px; }
+.field-error::before { content: "! "; }
+.field-invalid { border-color: #f00 !important; }
+
 #word-count { color: #555; font-size: 12px; }
 #word-count.over-limit { color: #f00; }
 #submit-result { margin-top: 10px; }

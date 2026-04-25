@@ -25,18 +25,21 @@
         <div class="gb-form-panel">
           <div class="gb-panel-title">-= Sign the guest book =-</div>
           <div class="gb-panel-body">
-            <form id="guestbook-form">
+            <form id="guestbook-form" novalidate>
               <div class="form-group">
                 <label for="gb-name">Name</label>
-                <input type="text" class="form-control" id="gb-name" placeholder="Your name" maxlength="100" required>
+                <input type="text" class="form-control" id="gb-name" placeholder="Your name" maxlength="100">
+                <span class="field-error" id="err-name"></span>
               </div>
               <div class="form-group">
                 <label for="gb-email">Email</label>
-                <input type="email" class="form-control" id="gb-email" placeholder="your@email.com" required>
+                <input type="email" class="form-control" id="gb-email" placeholder="your@email.com">
+                <span class="field-error" id="err-email"></span>
               </div>
               <div class="form-group">
                 <label for="gb-message">Message <span id="word-count">(0 / 100 words)</span></label>
-                <textarea class="form-control" id="gb-message" rows="4" placeholder="What's on your mind?" required></textarea>
+                <textarea class="form-control" id="gb-message" rows="4" placeholder="What's on your mind?"></textarea>
+                <span class="field-error" id="err-message"></span>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
               <div id="submit-result"></div>
@@ -106,18 +109,47 @@
         });
     }
 
+    function setError(id, msg) {
+      var el = document.getElementById(id);
+      el.textContent = msg;
+      el.style.display = msg ? "block" : "none";
+      var input = el.previousElementSibling;
+      if (msg) input.classList.add("field-invalid");
+      else input.classList.remove("field-invalid");
+    }
+
     document.getElementById("guestbook-form").addEventListener("submit", function(e) {
       e.preventDefault();
-      var name = document.getElementById("gb-name").value;
-      var email = document.getElementById("gb-email").value;
-      var message = document.getElementById("gb-message").value;
+      var name = document.getElementById("gb-name").value.trim();
+      var email = document.getElementById("gb-email").value.trim();
+      var message = document.getElementById("gb-message").value.trim();
       var resultEl = document.getElementById("submit-result");
 
-      if (wordCount(message) > 100) {
-        resultEl.innerHTML = '<p class="text-danger">Message exceeds 100 words.</p>';
-        return;
+      var valid = true;
+      setError("err-name", name ? "" : "Name is required.");
+      if (!name) valid = false;
+
+      if (!email) {
+        setError("err-email", "Email is required.");
+        valid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError("err-email", "Enter a valid email address.");
+        valid = false;
+      } else {
+        setError("err-email", "");
       }
 
+      if (!message) {
+        setError("err-message", "Message is required.");
+        valid = false;
+      } else if (wordCount(message) > 100) {
+        setError("err-message", "Message exceeds 100 words.");
+        valid = false;
+      } else {
+        setError("err-message", "");
+      }
+
+      if (!valid) return;
       resultEl.innerHTML = "<p>Submitting...</p>";
 
       fetch("/api/guestbook", {
