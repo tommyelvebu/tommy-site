@@ -1,0 +1,55 @@
+/* Form panel */
+.gb-form-panel {
+  background: #000084;
+  border: 2px solid #7b2fbe;
+  margin-bottom: 24px;
+}
+.gb-form-panel .gb-panel-title {
+  background: #7b2fbe;
+  color: #000;
+  padding: 8px 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.gb-form-panel .gb-panel-body {
+  padding: 16px 14px;
+}
+.gb-form-panel label {
+  color: #bbb;
+  margin-bottom: 2px;
+}
+.form-control {
+  background-color: #000084 !important;
+  color: #fff !important;
+  border: 1px solid #7b2fbe !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.form-control:focus {
+  border-color: #fff !important;
+  box-shadow: 0 0 6px rgba(123,47,190,.8) !important;
+  outline: 0;
+}
+.form-control::placeholder { color: #555 !important; }
+
+/* Entries */
+.entry-card {
+  background: #000084;
+  border: 2px solid #7b2fbe;
+  margin-bottom: 14px;
+}
+.entry-card-header {
+  border-bottom: 1px solid #7b2fbe;
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.entry-card-name { color: #7b2fbe; font-weight: bold; }
+.entry-card-date { color: #555; font-size: 12px; }
+.entry-card-body { padding: 10px 12px; color: #bbb; }
+
+#word-count { color: #555; font-size: 12px; }
+#word-count.over-limit { color: #f00; }
+#submit-result { margin-top: 10px; }
+hr { border-color: #333; }
