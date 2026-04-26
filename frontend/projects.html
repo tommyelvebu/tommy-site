@@ -58,11 +58,26 @@
             <h3 class="panel-title">Neural Network From Scratch</h3>
           </div>
           <div class="panel-body">
-            <p>2-layer feed-forward neural network for binary classification, implemented in numpy.
-              Forward pass, cross-entropy loss, and backpropagation all written by hand, benchmarked
-              against sklearn's MLPClassifier on the make_moons dataset.</p>
+            <p>Feed-forward neural net for binary classification in numpy. Forward pass,
+              cross-entropy loss, and backpropagation by hand, benchmarked against sklearn
+              on make_moons.</p>
             <a href="https://github.com/tommyelvebu/neural-network-from-scratch" class="btn btn-default" target="_blank">GitHub</a>
             <a class="btn btn-primary" onclick="openViewer('nnfs')">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Gas Welfare Analysis</h3>
+          </div>
+          <div class="panel-body">
+            <p>Welfare analysis of Norway's gas economy after the 2022 Ukraine supply
+              shock. Partial-equilibrium European gas model, solved with a hand-rolled
+              secant method.</p>
+            <a href="https://github.com/tommyelvebu/gas-welfare-norway" class="btn btn-default" target="_blank">GitHub</a>
+            <a class="btn btn-primary" onclick="openViewer('gas')">View Project</a>
           </div>
         </div>
       </div>
@@ -98,7 +113,22 @@
       nnfs: {
         title: "Neural Network From Scratch",
         notebooks: [
-          { label: "Notebook", src: "/projects/neural-network-from-scratch/notebook.html" }
+          { label: "1. Setup",          src: "/projects/neural-network-from-scratch/notebook.html#The-dataset" },
+          { label: "2. Forward Pass",   src: "/projects/neural-network-from-scratch/notebook.html#Forward-pass" },
+          { label: "3. Backward Pass",  src: "/projects/neural-network-from-scratch/notebook.html#Backward-pass" },
+          { label: "4. Training & vs sklearn", src: "/projects/neural-network-from-scratch/notebook.html#Training-loop" }
+        ]
+      },
+      gas: {
+        title: "Gas Welfare Analysis",
+        notebooks: [
+          { label: "1. Research Question", src: "/projects/gas-welfare-analysis/notebook.html#Research-Question" },
+          { label: "2. Background",        src: "/projects/gas-welfare-analysis/notebook.html#2.-Background:-Norway-as-Europe's-Gas-Supplier" },
+          { label: "3. Market Model",      src: "/projects/gas-welfare-analysis/notebook.html#3.-Partial-Equilibrium-European-Gas-Market-Model" },
+          { label: "4. Consumer Welfare",  src: "/projects/gas-welfare-analysis/notebook.html#4.-Consumer-Welfare:-Compensating-Variation" },
+          { label: "5. Petroleum Tax",     src: "/projects/gas-welfare-analysis/notebook.html#5.-Petroleum-Tax-as-a-Resource-Rent-Tax" },
+          { label: "6. Sensitivity",       src: "/projects/gas-welfare-analysis/notebook.html#6.-Welfare-Aggregation-and-Sensitivity-Analysis" },
+          { label: "7. Conclusion",        src: "/projects/gas-welfare-analysis/notebook.html#7.-Conclusion" }
         ]
       }
     };
@@ -106,12 +136,20 @@
     function openViewer(projectKey) {
       var project = projects[projectKey];
       var sidebar = document.getElementById("viewer-sidebar");
-      var html = '<div class="sidebar-title">' + project.title + '</div>';
+      sidebar.innerHTML = "";
+
+      var titleDiv = document.createElement("div");
+      titleDiv.className = "sidebar-title";
+      titleDiv.textContent = project.title;
+      sidebar.appendChild(titleDiv);
+
       project.notebooks.forEach(function (nb, i) {
-        html += '<a onclick="loadNotebook(\'' + nb.src + '\', this)" ' +
-                (i === 0 ? 'class="active"' : '') + '>' + nb.label + '</a>';
+        var a = document.createElement("a");
+        a.textContent = nb.label;
+        if (i === 0) a.className = "active";
+        a.addEventListener("click", function () { loadNotebook(nb.src, a); });
+        sidebar.appendChild(a);
       });
-      sidebar.innerHTML = html;
 
       document.getElementById("viewer-frame").src = project.notebooks[0].src;
       document.getElementById("viewer-overlay").style.display = "block";
